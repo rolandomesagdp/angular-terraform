@@ -18,3 +18,7 @@ provider "aws" {
   region  = "eu-west-1"
   profile = "rolandomesagdp"
 }
+
+module "angular_s3" {
+  source = "../../angular-s3"
+}

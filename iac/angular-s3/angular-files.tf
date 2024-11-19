@@ -9,9 +9,9 @@ locals {
 
 resource "aws_s3_object" "provision_source_files" {
   bucket       = aws_s3_bucket.angular_app_bucket.bucket
-  for_each     = fileset("../dist/angular-terraform/browser", "**/*.*")
+  for_each     = fileset("../../../dist/angular-terraform/browser", "**/*.*")
   key          = each.value
-  source       = "../dist/angular-terraform/browser/${each.value}"
+  source       = "../../dist/angular-terraform/browser/${each.value}"
   content_type = lookup(local.content_type_map, reverse(split(".", each.value))[0], "binary/octet-stream")
-  etag         = base64encode("../dist/angular-terraform/browser/${each.value}")
+  etag         = base64encode("../../../dist/angular-terraform/browser/${each.value}")
 }
