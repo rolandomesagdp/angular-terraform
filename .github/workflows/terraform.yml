@@ -54,7 +54,7 @@ jobs:
       - name: Download math result for job 1
         uses: actions/download-artifact@v4
         with:
-          name: angular-build-artifact
+          name: angular_build_artifact
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
