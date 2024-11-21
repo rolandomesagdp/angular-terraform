@@ -4,6 +4,7 @@ on:
   push:
     branches: ["master"]
   pull_request:
+    branches: ["master"]
 
 permissions:
   contents: read
@@ -51,7 +52,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download math result for job 1
+      - name: Download angular build artifact
         uses: actions/download-artifact@v4
         with:
           name: angular_build_artifact
@@ -77,9 +78,9 @@ jobs:
         working-directory: iac/environments/prod
 
       - name: Terraform Plan
-        run: terraform plan -var "angular_build_folder_path=../../../angular_build_artifact"
+        run: terraform plan -var "angular_build_folder_path=angular_build_artifact"
         working-directory: iac/environments/prod
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var "angular_build_folder_path=../../../angular_build_artifact"
+        run: terraform apply -auto-approve -var "angular_build_folder_path=angular_build_artifact"
         working-directory: iac/environments/prod
