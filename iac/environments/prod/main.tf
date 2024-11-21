@@ -18,5 +18,6 @@ provider "aws" {
 }
 
 module "angular_s3" {
-  source = "../../angular-s3"
+  source                    = "../../angular-s3"
+  angular_build_folder_path = var.angular_build_folder_path
 }

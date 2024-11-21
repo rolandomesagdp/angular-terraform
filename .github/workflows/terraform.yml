@@ -9,8 +9,37 @@ permissions:
   contents: read
 
 jobs:
-  terraform:
-    name: "Terraform"
+  build-job:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular_build_artifact
+          path: dist/angular-terraform/browser
+          retention-days: 1
+
+  deploy-job:
+    name: "AWS deploy with Terraform"
+    needs: build-job
     runs-on: ubuntu-latest
     environment: production
 
@@ -21,6 +50,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Download math result for job 1
+        uses: actions/download-artifact@v4
+        with:
+          name: angular-build-artifact
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -43,9 +77,9 @@ jobs:
         working-directory: iac/environments/prod
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -var "angular_build_folder_path=../../../angular_build_artifact"
         working-directory: iac/environments/prod
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var "angular_build_folder_path=../../../angular_build_artifact"
         working-directory: iac/environments/prod
