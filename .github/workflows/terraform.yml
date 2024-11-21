@@ -78,7 +78,7 @@ jobs:
         working-directory: iac/environments/prod
 
       - name: Terraform Plan
-        run: terraform plan -var "angular_build_folder_path=angular_build_artifact"
+        run: terraform plan -var "angular_build_folder_path=./angular_build_artifact"
         working-directory: iac/environments/prod
 
       - name: Terraform Apply
