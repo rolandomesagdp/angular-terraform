@@ -56,6 +56,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: angular_build_artifact
+          path: iac/environments/prod
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
