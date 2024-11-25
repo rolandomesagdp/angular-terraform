@@ -56,7 +56,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: angular_build_artifact
-          path: iac/environments/prod
+          path: dist
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -79,9 +79,9 @@ jobs:
         working-directory: iac/environments/prod
 
       - name: Terraform Plan
-        run: terraform plan -var "angular_build_folder_path=./angular_build_artifact"
+        run: terraform plan -var "angular_build_folder_path=../../../dist"
         working-directory: iac/environments/prod
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var "angular_build_folder_path=angular_build_artifact"
+        run: terraform apply -auto-approve -var "angular_build_folder_path=../../../dist"
         working-directory: iac/environments/prod

@@ -42,3 +42,5 @@ testem.log
 Thumbs.db
 iac/.terraform.lock.hcl
 .terraform
+iac/environments/local/.terraform.lock.hcl
+iac/environments/local/.terraform.lock.hcl
